@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AwezStudio - Ultimate Store & Web Template</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309'
+                        },
+                        flipblue: '#2874f0'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons & Inter Font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 1; }
+            100% { transform: translateY(-70px) scale(1.4); opacity: 0; }
+        }
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: floatUp 0.9s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200 pb-24">
+
+    <!-- HEADER / NAVIGATION (Clean & Familiar) -->
+    <header class="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 py-3 shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
+            <!-- Logo -->
+            <a href="#" onclick="event.preventDefault(); playClickSound('tap'); switchTab('all')" class="flex items-center gap-2.5 group shrink-0">
+                <div class="w-10 h-10 bg-gradient-to-tr from-[#2874f0] to-indigo-600 rounded-xl flex items-center justify-center text-white text-lg font-black shadow-md group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight text-slate-900 dark:text-white leading-none">
+                        Awez<span class="text-[#2874f0]">Studio</span>
+                    </h1>
+                    <p class="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold tracking-wide mt-0.5">⚡ Crafted by Awez</p>
+                </div>
+            </a>
+
+            <!-- Interactive Delivery Pincode Checker -->
+            <div onclick="playClickSound('tap'); openPincodeModal()" class="cursor-pointer hidden lg:flex items-center gap-2 text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-2 rounded-xl text-slate-700 dark:text-slate-300 transition-colors">
+                <i class="fa-solid fa-location-dot text-[#2874f0] text-sm"></i>
+                <div>
+                    <p class="text-[10px] text-slate-400 leading-tight">Click to change Pincode</p>
+                    <p class="font-bold leading-tight" id="header-pincode-text">Pune • 411001 (24h Delivery)</p>
+                </div>
+            </div>
+
+            <!-- Prominent Clean Search Bar -->
+            <div class="flex-1 max-w-xl hidden sm:flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl border border-transparent focus-within:border-[#2874f0] focus-within:bg-white dark:focus-within:bg-slate-900 transition-all overflow-hidden">
+                <i class="fa-solid fa-magnifying-glass text-slate-400 pl-4"></i>
+                <input type="text" id="search-input" placeholder="Search headphones, watches, speakers, shoes..." 
+                       class="w-full bg-transparent text-slate-900 dark:text-white text-sm font-medium py-2.5 px-3 outline-none">
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+                <!-- Sound Toggle Button -->
+                <button id="sound-toggle-btn" onclick="toggleSound()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Toggle UI Sounds">
+                    <i id="sound-icon" class="fa-solid fa-volume-high text-sm text-[#2874f0]"></i>
+                </button>
+
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle-btn" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Toggle Dark/Light Mode">
+                    <i class="fa-solid fa-moon text-sm dark:hidden"></i>
+                    <i class="fa-solid fa-sun text-sm hidden dark:block text-amber-400"></i>
+                </button>
+
+                <!-- My Orders History Button -->
+                <button onclick="playClickSound('tap'); openOrdersModal()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1.5" title="My Past Orders">
+                    <i class="fa-solid fa-box-open text-sm text-amber-500"></i>
+                    <span class="hidden md:inline text-xs font-bold">Orders</span>
+                </button>
+
+                <!-- Wishlist Nav Button -->
+                <button id="wishlist-nav-btn" onclick="playClickSound('pop'); switchTab('wishlist')" class="relative p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1.5" title="Saved Items">
+                    <i class="fa-solid fa-heart text-sm text-red-500"></i>
+                    <span class="hidden md:inline text-xs font-bold">Saved</span>
+                    <span id="wishlist-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                        0
+                    </span>
+                </button>
+
+                <!-- Cart Button -->
+                <button id="open-cart-btn" class="relative bg-[#2874f0] hover:bg-blue-700 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-sm transition-transform active:scale-95">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Cart</span>
+                    <span id="cart-badge" class="bg-amber-400 text-slate-900 text-[11px] font-black px-1.5 py-0.2 rounded-full">
+                        0
+                    </span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Search Input -->
+        <div class="mt-2.5 sm:hidden flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-3">
+            <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+            <input type="text" id="search-input-mobile" placeholder="Search products..." 
+                   class="w-full bg-transparent text-slate-900 dark:text-white text-sm font-medium py-2 px-2.5 outline-none">
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-8 py-6 flex-1 w-full space-y-6">
+        
+        <!-- APPLE-CLEAN + FLIPKART-DEAL HERO BANNER -->
+        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-[#1e3a8a] to-[#2874f0] text-white p-6 sm:p-10 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-3 max-w-xl z-10">
+                <button onclick="copyCouponCode('EASY10')" class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/20 text-amber-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full transition-all active:scale-95 cursor-pointer">
+                    <span>⚡ Super Saver Sale</span> • <span>Tap to Copy Code: <u>EASY10</u></span> <i class="fa-regular fa-copy"></i>
+                </button>
+                <h2 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+                    Smart Gadgets & Lifestyle, <span class="text-amber-300">Zero Confusion.</span>
+                </h2>
+                <p class="text-blue-100 text-xs sm:text-sm leading-relaxed">
+                    Tap <strong>+ Add</strong> for instant cart updates, tap ❤️ to save favorites, and checkout in seconds via Cash on Delivery or WhatsApp.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-3">
+                    <button onclick="playClickSound('tap'); document.getElementById('product-grid').scrollIntoView({behavior: 'smooth'})" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-transform active:scale-95">
+                        Explore Deals ↓
+                    </button>
+                    <button onclick="playClickSound('tap'); openPincodeModal()" class="bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl border border-white/20 transition-transform active:scale-95">
+                        <i class="fa-solid fa-location-dot mr-1"></i> Check Delivery Speed
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3 Simple Trust Badges -->
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-4 w-full md:w-auto z-10">
+                <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/15 text-center">
+                    <i class="fa-solid fa-truck-fast text-2xl text-amber-300 mb-1.5"></i>
+                    <p class="text-xs font-bold">Free Delivery</p>
+                    <p class="text-[10px] text-blue-200">No minimum order</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/15 text-center">
+                    <i class="fa-solid fa-hand-holding-dollar text-2xl text-emerald-300 mb-1.5"></i>
+                    <p class="text-xs font-bold">Cash on Delivery</p>
+                    <p class="text-[10px] text-blue-200">Pay at doorstep</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/15 text-center">
+                    <i class="fa-solid fa-rotate-left text-2xl text-sky-300 mb-1.5"></i>
+                    <p class="text-xs font-bold">7-Day Return</p>
+                    <p class="text-[10px] text-blue-200">100% replacement</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIMPLE CATEGORY PILLS & SORTING -->
+        <div class="flex flex-wrap items-center justify-between gap-4 bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+            <!-- Category Tabs -->
+            <div class="flex flex-wrap gap-2" id="category-filters">
+                <button data-cat="all" class="cat-btn active bg-[#2874f0] text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all">
+                    All Products
+                </button>
+                <button data-cat="audio" class="cat-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                    🎧 Audio
+                </button>
+                <button data-cat="wearables" class="cat-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                    ⌚ Watches
+                </button>
+                <button data-cat="accessories" class="cat-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                    ⌨️ Accessories
+                </button>
+                <button data-cat="lifestyle" class="cat-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                    👟 Lifestyle
+                </button>
+                <button data-cat="wishlist" class="cat-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-heart text-red-500"></i> Saved
+                </button>
+            </div>
+
+            <!-- Sorting Select -->
+            <div class="flex items-center gap-2">
+                <label for="sort-select" class="text-xs font-bold text-slate-500 dark:text-slate-400">Sort:</label>
+                <select id="sort-select" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl px-3 py-2 border border-slate-200 dark:border-slate-700 outline-none cursor-pointer">
+                    <option value="default">Popular First</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
+                    <option value="rating">Highest Rated ★</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- PRODUCTS GRID -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Products injected dynamically -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-16 space-y-3 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <div class="text-5xl">🔍</div>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">No items found</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm max-w-sm mx-auto">Try searching another keyword or tap "All Products" to see everything.</p>
+        </div>
+    </main>
+
+    <!-- BLINKIT / ZEPTO STYLE STICKY FLOATING BOTTOM CART BAR -->
+    <div id="sticky-cart-bar" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-8 sm:w-96 z-40 translate-y-28 opacity-0 pointer-events-none transition-all duration-300">
+        <div onclick="playClickSound('tap'); openCart()" class="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center justify-between border border-emerald-400/30">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm" id="sticky-bar-count">
+                    1
+                </div>
+                <div>
+                    <p class="text-[11px] text-emerald-100 font-semibold uppercase tracking-wider">Items in Cart</p>
+                    <p class="text-base font-black leading-tight" id="sticky-bar-total">₹2,999</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 font-extrabold text-sm bg-white text-emerald-700 px-3.5 py-2 rounded-xl shadow-sm">
+                <span>View Cart</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 px-4 text-center text-xs text-slate-500 dark:text-slate-400 mt-12">
+        <p>© 2026 AwezStudio. Built with passion by Awez.</p>
+    </footer>
+
+    <!-- CART SLIDE-OVER DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
+        <div id="cart-backdrop" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white dark:bg-slate-900 p-6 flex flex-col shadow-2xl">
+                
+                <!-- Drawer Header -->
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-brand-600"></i> Shopping Cart
+                    </h2>
+                    <button id="close-cart-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl font-bold p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items" class="flex-1 overflow-y-auto py-4 space-y-4">
+                    <!-- Dynamic cart list -->
+                </div>
+
+                <!-- Promo Code Section -->
+                <div class="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+                    <div class="flex gap-2">
+                        <input type="text" id="promo-input" placeholder="Promo code (e.g. EASY10)" class="flex-1 bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 uppercase font-semibold outline-none focus:border-brand-500">
+                        <button onclick="applyPromoCode()" class="bg-slate-800 hover:bg-black dark:bg-slate-700 dark:hover:bg-slate-600 text-white font-semibold text-xs px-3 py-2 rounded-lg transition-colors">
+                            Apply
+                        </button>
+                    </div>
+                    <p id="promo-msg" class="text-[11px] font-medium hidden"></p>
+
+                    <!-- Summary -->
+                    <div class="space-y-1.5 pt-2 text-sm">
+                        <div class="flex justify-between text-slate-500 dark:text-slate-400">
+                            <span>Subtotal:</span>
+                            <span id="cart-subtotal" class="font-medium">₹0</span>
+                        </div>
+                        <div id="discount-row" class="flex justify-between text-emerald-600 dark:text-emerald-400 font-medium hidden">
+                            <span>Coupon Discount:</span>
+                            <span id="cart-discount">-₹0</span>
+                        </div>
+                        <div class="flex justify-between text-emerald-600 dark:text-emerald-400 text-xs font-medium">
+                            <span>Delivery Charges:</span>
+                            <span>FREE</span>
+                        </div>
+                        <div class="flex justify-between text-base font-extrabold text-slate-900 dark:text-white pt-2 border-t border-slate-100 dark:border-slate-800">
+                            <span>Total Payable:</span>
+                            <span id="cart-total" class="text-[#2874f0] dark:text-amber-400">₹0</span>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Buttons -->
+                    <div class="space-y-2 pt-2">
+                        <button id="checkout-btn" class="w-full py-3.5 rounded-xl bg-[#fb641b] hover:bg-orange-600 text-white font-extrabold text-sm uppercase tracking-wide transition-transform active:scale-98 shadow-md flex items-center justify-center gap-2">
+                            <span>Proceed to Checkout</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div id="checkout-backdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 z-10 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <button id="close-checkout-btn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Complete Your Order</h3>
+            
+            <form id="checkout-form" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Full Name</label>
+                    <input type="text" id="cust-name" required placeholder="John Doe" class="w-full bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Shipping Address</label>
+                    <textarea id="cust-address" required rows="2" placeholder="123 Main St, Apartment 4B" class="w-full bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 outline-none focus:border-brand-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Phone Number</label>
+                    <input type="tel" id="cust-phone" required placeholder="+1 234 567 890" class="w-full bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 outline-none focus:border-brand-500">
+                </div>
+
+                <div class="pt-2 space-y-2.5">
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-[#2874f0] hover:bg-blue-700 text-white font-extrabold text-sm transition-transform active:scale-98 shadow-md">
+                        Confirm Order (Cash on Delivery)
+                    </button>
+                    <button type="button" onclick="placeWhatsAppOrder()" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm flex items-center justify-center gap-2 transition-transform active:scale-98 shadow-md">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Order Directly on WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL MODAL -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div id="product-modal-backdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 z-10 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <button id="close-product-modal-btn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl font-bold">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="product-modal-body">
+                <!-- Modal product dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PINCODE DELIVERY CHECKER MODAL -->
+    <div id="pincode-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closePincodeModal()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 z-10 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <button onclick="playClickSound('tap'); closePincodeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-location-dot text-[#2874f0]"></i> Check Delivery Speed
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Enter your 6-digit Indian Pincode to check estimated arrival time.</p>
+            <div class="flex gap-2">
+                <input type="text" id="pincode-input" maxlength="6" placeholder="e.g. 411001" class="flex-1 bg-slate-100 dark:bg-slate-800 text-sm font-bold px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:border-[#2874f0]">
+                <button onclick="checkPincodeDelivery()" class="bg-[#2874f0] hover:bg-blue-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl">Check</button>
+            </div>
+            <p id="pincode-result" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hidden"></p>
+        </div>
+    </div>
+
+    <!-- MY ORDERS HISTORY MODAL -->
+    <div id="orders-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeOrdersModal()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 z-10 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <button onclick="playClickSound('tap'); closeOrdersModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-box-open text-amber-500"></i> My Past Orders
+            </h3>
+            <div id="orders-list" class="space-y-3 max-h-72 overflow-y-auto">
+                <!-- Past orders populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER SUCCESS CONFIRMATION MODAL -->
+    <div id="order-success-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 z-10 shadow-2xl border border-slate-200 dark:border-slate-800 text-center space-y-4 animate-scale-in">
+            <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-black text-slate-900 dark:text-white">Order Placed Successfully! 🎉</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Thank you for shopping with <strong class="text-[#2874f0]">AwezStudio</strong>.</p>
+            </div>
+            
+            <div id="success-receipt-details" class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 text-left space-y-2 text-xs">
+                <!-- Dynamic receipt breakdown -->
+            </div>
+
+            <div class="pt-2 flex gap-3">
+                <button onclick="closeSuccessModal(); openOrdersModal();" class="flex-1 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-extrabold text-xs transition-transform active:scale-95">
+                    View in Orders 📦
+                </button>
+                <button onclick="closeSuccessModal(); switchTab('all');" class="flex-1 py-3 rounded-xl bg-[#2874f0] hover:bg-blue-700 text-white font-extrabold text-xs transition-transform active:scale-95 shadow-md">
+                    Continue Shopping 🛍️
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-medium text-xs px-4 py-3 rounded-xl shadow-xl translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600"></i>
+        <span id="toast-msg">Action completed</span>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // AESTHETIC SOUND EFFECTS ENGINE (Zero external files needed)
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function playClickSound(type = 'tap') {
+            if (!soundEnabled) return;
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'heart') {
+                    // Warm ascending chime for hearts
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.14); // G5
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                    osc.start(now);
+                    osc.stop(now + 0.22);
+                } else if (type === 'pop') {
+                    // Soft bubble pop for adding to cart
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(340, now);
+                    osc.frequency.exponentialRampToValueAtTime(620, now + 0.09);
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+                    osc.start(now);
+                    osc.stop(now + 0.11);
+                } else if (type === 'success') {
+                    // Pleasant 2-note chord for order success
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.1); // A5
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else {
+                    // Clean soft tactile click
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(480, now);
+                    osc.frequency.exponentialRampToValueAtTime(280, now + 0.05);
+                    gain.gain.setValueAtTime(0.09, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                }
+            } catch (e) {
+                // Ignore audio errors if blocked
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            if (soundEnabled) {
+                icon.className = "fa-solid fa-volume-high text-sm text-[#2874f0]";
+                playClickSound('pop');
+                showToast("Aesthetic UI Sounds ON 🔊");
+            } else {
+                icon.className = "fa-solid fa-volume-xmark text-sm text-slate-400";
+                showToast("UI Sounds Muted 🔇");
+            }
+        }
+
+        // FLOATING HEARTS ANIMATION
+        function spawnFloatingHearts(x, y) {
+            const hearts = ['❤️', '💖', '💕', '💗'];
+            for (let i = 0; i < 6; i++) {
+                const el = document.createElement('div');
+                el.className = 'floating-heart text-lg select-none';
+                el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+                const offsetX = (Math.random() - 0.5) * 50;
+                const offsetY = (Math.random() - 0.5) * 20;
+                el.style.left = `${x + offsetX}px`;
+                el.style.top = `${y + offsetY}px`;
+                el.style.animationDelay = `${i * 0.06}s`;
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 1000);
+            }
+        }
+
+        // PRODUCTS DATA (Expanded to 10 Products across 4 Categories)
+        const products = [
+            {
+                id: 1,
+                name: "boAt Nirvana ANC Wireless Headphones (30H Playtime)",
+                category: "audio",
+                price: 2999,
+                mrp: 5999,
+                rating: 4.5,
+                reviewsCount: "12,480",
+                badge: "Best Seller",
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+                description: "Active Noise Cancellation up to 32dB, 30-hour battery backup, ENx crystal clear calling mic, and ultra-soft memory foam earcups.",
+            },
+            {
+                id: 2,
+                name: "Noise ColorFit Pro 5 AMOLED Smartwatch with BT Calling",
+                category: "wearables",
+                price: 3499,
+                mrp: 6999,
+                rating: 4.4,
+                reviewsCount: "8,920",
+                badge: "Deal of the Day",
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+                description: "1.85-inch Always-On AMOLED display, Bluetooth calling, 100+ sports modes, SpO2 & heart rate monitoring with 7-day battery.",
+            },
+            {
+                id: 3,
+                name: "Portronics Hydra 10 Wireless Mechanical Gaming Keyboard",
+                category: "accessories",
+                price: 2499,
+                mrp: 4499,
+                rating: 4.7,
+                reviewsCount: "4,315",
+                badge: "Top Rated",
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80",
+                description: "Compact 75% mechanical keyboard featuring tactile switches, white LED backlighting, and Bluetooth 5.0 + 2.4GHz dual connectivity.",
+            },
+            {
+                id: 4,
+                name: "JBL Go 3 Waterproof Portable Bluetooth Speaker",
+                category: "audio",
+                price: 2799,
+                mrp: 3999,
+                rating: 4.6,
+                reviewsCount: "19,104",
+                badge: "Assured",
+                image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=600&q=80",
+                description: "IP67 waterproof and dustproof portable speaker delivering rich JBL Pro Sound with punchy bass for travel and home.",
+            },
+            {
+                id: 5,
+                name: "Logitech M331 Silent Plus Ergonomic Wireless Mouse",
+                category: "accessories",
+                price: 1199,
+                mrp: 1695,
+                rating: 4.4,
+                reviewsCount: "25,600",
+                badge: "Choice",
+                image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=600&q=80",
+                description: "90% noise-reduced silent clicks, contoured soft rubber grip for right-hand comfort, and 18-month battery life.",
+            },
+            {
+                id: 6,
+                name: "Spigen 15W Max Fast Wireless Charging Pad (Qi-Certified)",
+                category: "accessories",
+                price: 1499,
+                mrp: 2499,
+                rating: 4.3,
+                reviewsCount: "3,410",
+                badge: "Limited Deal",
+                image: "https://images.unsplash.com/photo-1622445268465-8438165a3a5a?auto=format&fit=crop&w=600&q=80",
+                description: "15W fast wireless charging pad compatible with iPhone, Samsung Galaxy, OnePlus, and wireless earbuds with overheating protection.",
+            },
+            {
+                id: 7,
+                name: "OnePlus Buds 3 True Wireless Earbuds (49dB ANC)",
+                category: "audio",
+                price: 4499,
+                mrp: 6499,
+                rating: 4.8,
+                reviewsCount: "9,840",
+                badge: "Trending",
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80",
+                description: "Dual dynamic drivers with BassWave enhancement, 49dB adaptive noise cancellation, and 44 hours total playback.",
+            },
+            {
+                id: 8,
+                name: "Nike Revolution 7 Lightweight Running Sneakers",
+                category: "lifestyle",
+                price: 3299,
+                mrp: 4995,
+                rating: 4.6,
+                reviewsCount: "6,210",
+                badge: "Hot Pick",
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
+                description: "Soft foam midsole, breathable mesh upper, and flexible traction outsole built for everyday walking and running comfort.",
+            },
+            {
+                id: 9,
+                name: "Urban Tribe Waterproof Anti-Theft Laptop Backpack",
+                category: "lifestyle",
+                price: 1599,
+                mrp: 3199,
+                rating: 4.5,
+                reviewsCount: "11,300",
+                badge: "Value Buy",
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
+                description: "Fits up to 15.6-inch laptops, built-in USB charging port, water-repellent fabric, and padded breathable back support.",
+            },
+            {
+                id: 10,
+                name: "Samsung Galaxy Fit3 Fitness & Sleep Tracker Band",
+                category: "wearables",
+                price: 3999,
+                mrp: 5999,
+                rating: 4.7,
+                reviewsCount: "5,490",
+                badge: "New Launch",
+                image: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=600&q=80",
+                description: "Sleek aluminum body, 1.6-inch AMOLED screen, up to 13 days battery life, fall detection, and instant camera remote.",
+            }
+        ];
+
+        // STATE VARIABLES
+        let cart = [];
+        let wishlist = JSON.parse(localStorage.getItem('easyshop_wishlist')) || [];
+        let pastOrders = JSON.parse(localStorage.getItem('easyshop_orders')) || [];
+        let activeCat = 'all';
+        let searchQuery = '';
+        let currentSort = 'default';
+        let discountPercent = 0;
+
+        // INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderProducts();
+            updateWishlistBadge();
+            updateCart();
+            
+            // Category Tabs Event Listeners
+            document.querySelectorAll('#category-filters button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    playClickSound('tap');
+                    const cat = e.currentTarget.getAttribute('data-cat');
+                    switchTab(cat);
+                });
+            });
+
+            document.getElementById('sort-select').addEventListener('change', (e) => {
+                playClickSound('tap');
+                currentSort = e.target.value;
+                renderProducts();
+            });
+
+            const searchInput = document.getElementById('search-input');
+            const searchMobile = document.getElementById('search-input-mobile');
+            
+            const handleSearch = (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                renderProducts();
+            };
+
+            searchInput.addEventListener('input', handleSearch);
+            searchMobile.addEventListener('input', handleSearch);
+
+            // Theme Toggle Event
+            document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+                playClickSound('tap');
+                toggleTheme();
+            });
+
+            // Cart Drawer Controls
+            document.getElementById('open-cart-btn').addEventListener('click', () => {
+                playClickSound('tap');
+                openCart();
+            });
+            document.getElementById('close-cart-btn').addEventListener('click', () => {
+                playClickSound('tap');
+                closeCart();
+            });
+            document.getElementById('cart-backdrop').addEventListener('click', closeCart);
+            
+            // Modal Controls
+            document.getElementById('checkout-btn').addEventListener('click', () => {
+                playClickSound('pop');
+                openCheckout();
+            });
+            document.getElementById('close-checkout-btn').addEventListener('click', () => {
+                playClickSound('tap');
+                closeCheckout();
+            });
+            document.getElementById('checkout-backdrop').addEventListener('click', closeCheckout);
+            document.getElementById('checkout-form').addEventListener('submit', handleCheckoutSubmit);
+
+            document.getElementById('close-product-modal-btn').addEventListener('click', () => {
+                playClickSound('tap');
+                closeProductModal();
+            });
+            document.getElementById('product-modal-backdrop').addEventListener('click', closeProductModal);
+        });
+
+        // SWITCH CATEGORY TAB (Fixes unresponsive category buttons & logo click)
+        function switchTab(cat) {
+            activeCat = cat;
+            document.querySelectorAll('#category-filters .cat-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.className = "cat-btn active bg-[#2874f0] text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all shadow-sm";
+                } else {
+                    btn.className = "cat-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all";
+                }
+            });
+            renderProducts();
+        }
+
+        // COPY COUPON CODE
+        function copyCouponCode(code) {
+            playClickSound('pop');
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast(`Copied code "${code}"! Paste in Cart for 10% OFF 🎉`);
+        }
+
+        // DARK / LIGHT THEME TOGGLE
+        function initTheme() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                showToast("Switched to Light mode ☀️");
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                showToast("Switched to Dark mode 🌙");
+            }
+        }
+
+        // RENDER PRODUCTS
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const empty = document.getElementById('empty-state');
+
+            let filtered = products.filter(p => {
+                const matchesCat = activeCat === 'all' 
+                    ? true 
+                    : (activeCat === 'wishlist' ? wishlist.includes(p.id) : p.category === activeCat);
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery) || p.category.toLowerCase().includes(searchQuery);
+                return matchesCat && matchesSearch;
+            });
+
+            // Apply Sorting
+            if (currentSort === 'low-high') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'high-low') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (currentSort === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            }
+
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                empty.classList.remove('hidden');
+            } else {
+                empty.classList.add('hidden');
+                filtered.forEach(p => {
+                    const isWishlisted = wishlist.includes(p.id);
+                    const discountOff = Math.round(((p.mrp - p.price) / p.mrp) * 100);
+                    const cartItem = cart.find(c => c.id === p.id);
+                    const qtyInCart = cartItem ? cartItem.qty : 0;
+
+                    const card = document.createElement('div');
+                    card.className = "bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between group";
+                    
+                    // Blinkit-style instant "+ ADD" or "- 1 +" control
+                    const cartControlHTML = qtyInCart === 0 
+                        ? `<button onclick="addToCart(${p.id})" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-transform active:scale-95 shadow-sm">
+                               <i class="fa-solid fa-plus"></i> Add
+                           </button>`
+                        : `<div class="flex items-center justify-between bg-emerald-600 text-white font-extrabold text-xs rounded-xl px-2.5 py-2 shadow-sm">
+                               <button onclick="updateQty(${p.id}, -1)" class="w-6 h-6 flex items-center justify-center hover:bg-emerald-700 rounded-lg transition-colors"><i class="fa-solid fa-minus"></i></button>
+                               <span class="text-sm">${qtyInCart}</span>
+                               <button onclick="updateQty(${p.id}, 1)" class="w-6 h-6 flex items-center justify-center hover:bg-emerald-700 rounded-lg transition-colors"><i class="fa-solid fa-plus"></i></button>
+                           </div>`;
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="relative h-52 w-full bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden mb-3.5 cursor-pointer" onclick="playClickSound('tap'); openProductModal(${p.id})">
+                                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                
+                                <!-- Top-Left Deal Tag -->
+                                <span class="absolute top-2.5 left-2.5 bg-slate-900/85 backdrop-blur-sm text-amber-300 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-lg">
+                                    ${p.badge}
+                                </span>
+
+                                <!-- Wishlist Heart with Floating Animation -->
+                                <button onclick="event.stopPropagation(); toggleWishlist(${p.id}, event)" class="absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white/95 dark:bg-slate-900/95 flex items-center justify-center text-slate-400 hover:text-red-500 transition-transform active:scale-125 shadow">
+                                    <i class="fa-${isWishlisted ? 'solid' : 'regular'} fa-heart text-base ${isWishlisted ? 'text-red-500' : ''}"></i>
+                                </button>
+                            </div>
+
+                            <!-- Title -->
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm sm:text-base mb-1.5 line-clamp-2 cursor-pointer hover:text-[#2874f0] transition-colors" onclick="playClickSound('tap'); openProductModal(${p.id})">${p.name}</h3>
+                            
+                            <!-- Rating Pill + Assured Badge -->
+                            <div class="flex items-center gap-2 mb-2.5">
+                                <span class="inline-flex items-center gap-1 bg-emerald-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-md">
+                                    ${p.rating} <i class="fa-solid fa-star text-[9px]"></i>
+                                </span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">${p.reviewsCount} ratings</span>
+                                <span class="text-[10px] font-bold text-[#2874f0] bg-blue-50 dark:bg-blue-950 px-2 py-0.5 rounded-md ml-auto">✔ Verified</span>
+                            </div>
+
+                            <!-- Clear Price, Strike-through MRP & % OFF -->
+                            <div class="flex items-baseline gap-2 mb-1">
+                                <span class="text-xl font-black text-slate-900 dark:text-white">₹${p.price.toLocaleString('en-IN')}</span>
+                                <span class="text-xs text-slate-400 line-through">₹${p.mrp.toLocaleString('en-IN')}</span>
+                                <span class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400">${discountOff}% OFF</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3.5">✓ Free Next-Day Delivery</p>
+                        </div>
+
+                        <!-- Easy Dual Action Buttons -->
+                        <div class="grid grid-cols-2 gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+                            ${cartControlHTML}
+                            <button onclick="buyNow(${p.id})" class="bg-[#2874f0] hover:bg-blue-700 text-white font-extrabold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-transform active:scale-95 shadow-sm">
+                                <i class="fa-solid fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // WISHLIST MANAGEMENT WITH FLOATING HEARTS & SOUND
+        function toggleWishlist(id, evt) {
+            const index = wishlist.indexOf(id);
+            if (index > -1) {
+                playClickSound('tap');
+                wishlist.splice(index, 1);
+                showToast("Removed from Saved Items");
+            } else {
+                playClickSound('heart');
+                wishlist.push(id);
+                if (evt && evt.clientX) {
+                    spawnFloatingHearts(evt.clientX, evt.clientY);
+                }
+                showToast("Saved to Wishlist ❤️");
+            }
+            localStorage.setItem('easyshop_wishlist', JSON.stringify(wishlist));
+            updateWishlistBadge();
+            renderProducts();
+        }
+
+        function updateWishlistBadge() {
+            const badge = document.getElementById('wishlist-badge');
+            if (wishlist.length > 0) {
+                badge.innerText = wishlist.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // CART LOGIC (Clean, single definition without duplicates)
+        function addToCart(id) {
+            playClickSound('pop');
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                const product = products.find(p => p.id === id);
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCart();
+            renderProducts();
+            showToast("Added to Cart! 🛒");
+        }
+
+        function buyNow(id) {
+            playClickSound('pop');
+            const existing = cart.find(item => item.id === id);
+            if (!existing) {
+                const product = products.find(p => p.id === id);
+                cart.push({ ...product, qty: 1 });
+                updateCart();
+                renderProducts();
+            }
+            openCheckout();
+        }
+
+        function updateQty(id, delta) {
+            playClickSound('tap');
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+            updateCart();
+            renderProducts();
+        }
+
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartBadge = document.getElementById('cart-badge');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+            const discountRow = document.getElementById('discount-row');
+            const discountEl = document.getElementById('cart-discount');
+            const stickyBar = document.getElementById('sticky-cart-bar');
+            const stickyCount = document.getElementById('sticky-bar-count');
+            const stickyTotal = document.getElementById('sticky-bar-total');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            cartBadge.innerText = totalItems;
+
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-slate-400 space-y-2">
+                        <i class="fa-solid fa-basket-shopping text-4xl"></i>
+                        <p class="text-sm font-medium">Your cart is empty.</p>
+                    </div>
+                `;
+            } else {
+                cart.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = "flex items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800";
+                    row.innerHTML = `
+                        <img src="${item.image}" class="w-12 h-12 rounded-lg object-cover">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">${item.name}</h4>
+                            <p class="text-xs text-[#2874f0] dark:text-amber-400 font-bold">₹${item.price.toLocaleString('en-IN')}</p>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1">
+                            <button onclick="updateQty(${item.id}, -1)" class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white font-bold px-1">-</button>
+                            <span class="text-xs font-bold text-slate-800 dark:text-white min-w-[16px] text-center">${item.qty}</span>
+                            <button onclick="updateQty(${item.id}, 1)" class="text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white font-bold px-1">+</button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(row);
+                });
+            }
+
+            const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const discountAmount = Math.round((subtotal * discountPercent) / 100);
+            const grandTotal = Math.max(0, subtotal - discountAmount);
+
+            subtotalEl.innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+
+            if (discountPercent > 0) {
+                discountRow.classList.remove('hidden');
+                discountEl.innerText = `-₹${discountAmount.toLocaleString('en-IN')}`;
+            } else {
+                discountRow.classList.add('hidden');
+            }
+
+            totalEl.innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
+
+            // Update Blinkit-style Sticky Bottom Cart Bar
+            if (totalItems > 0) {
+                stickyCount.innerText = totalItems;
+                stickyTotal.innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
+                stickyBar.classList.remove('translate-y-28', 'opacity-0', 'pointer-events-none');
+            } else {
+                stickyBar.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
+            }
+        }
+
+        // PROMO CODE SYSTEM
+        function applyPromoCode() {
+            playClickSound('pop');
+            const input = document.getElementById('promo-input').value.trim().toUpperCase();
+            const msg = document.getElementById('promo-msg');
+
+            if (input === 'EASY10') {
+                discountPercent = 10;
+                msg.innerText = "✓ 10% Promo applied successfully!";
+                msg.className = "text-[11px] font-medium text-emerald-600 dark:text-emerald-400 block";
+                showToast("10% discount applied!");
+            } else if (input === 'EASY20') {
+                discountPercent = 20;
+                msg.innerText = "✓ 20% Super Saver applied!";
+                msg.className = "text-[11px] font-medium text-emerald-600 dark:text-emerald-400 block";
+                showToast("20% discount applied!");
+            } else {
+                discountPercent = 0;
+                msg.innerText = "✕ Invalid promo code. Try 'EASY10'.";
+                msg.className = "text-[11px] font-medium text-red-500 block";
+            }
+            updateCart();
+        }
+
+        // CART DRAWER MODAL
+        function openCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.remove('hidden');
+        }
+
+        function closeCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.add('hidden');
+        }
+
+        // CHECKOUT & ORDER HISTORY
+        function openCheckout() {
+            if (cart.length === 0) {
+                showToast("Cart is empty!");
+                return;
+            }
+            closeCart();
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('hidden');
+        }
+
+        function handleCheckoutSubmit(e) {
+            e.preventDefault();
+            playClickSound('success');
+
+            const name = document.getElementById('cust-name').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const grandTotal = Math.max(0, subtotal - Math.round((subtotal * discountPercent) / 100));
+
+            const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
+            const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+            const newOrder = {
+                id: orderId,
+                date: dateStr,
+                items: cart.map(i => `${i.name} (x${i.qty})`).join(', '),
+                total: grandTotal,
+                customer: name,
+                address: address
+            };
+
+            pastOrders.unshift(newOrder);
+            localStorage.setItem('easyshop_orders', JSON.stringify(pastOrders));
+
+            // Populate Success Modal Receipt
+            const receiptBox = document.getElementById('success-receipt-details');
+            receiptBox.innerHTML = `
+                <div class="flex justify-between font-bold text-slate-700 dark:text-slate-300 pb-2 border-b border-slate-200 dark:border-slate-700">
+                    <span>Tracking ID: <span class="text-[#2874f0]">${orderId}</span></span>
+                    <span class="text-emerald-600">Cash on Delivery</span>
+                </div>
+                <div class="space-y-1 text-slate-600 dark:text-slate-400">
+                    <p><strong>Customer:</strong> ${name}</p>
+                    <p><strong>Deliver To:</strong> ${address}</p>
+                    <p class="font-semibold text-slate-900 dark:text-white pt-1"><strong>Items:</strong> ${newOrder.items}</p>
+                </div>
+                <div class="flex justify-between font-black text-sm text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <span>Total Amount:</span>
+                    <span class="text-[#2874f0]">₹${grandTotal.toLocaleString('en-IN')}</span>
+                </div>
+            `;
+
+            cart = [];
+            discountPercent = 0;
+            document.getElementById('promo-input').value = '';
+            document.getElementById('promo-msg').classList.add('hidden');
+            updateCart();
+            renderProducts();
+            closeCheckout();
+
+            // Open Success Modal
+            document.getElementById('order-success-modal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('order-success-modal').classList.add('hidden');
+        }
+
+        function placeWhatsAppOrder() {
+            playClickSound('success');
+            const name = document.getElementById('cust-name').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+
+            if (!name || !address) {
+                showToast("Please enter your name and address first!");
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const total = Math.round(subtotal * (1 - discountPercent / 100)).toLocaleString('en-IN');
+            
+            let itemsText = cart.map(i => `• ${i.name} (x${i.qty}) - ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('%0A');
+            let message = `Hi EasyKart! I'd like to place an order:%0A%0A*Customer:* ${encodeURIComponent(name)}%0A*Address:* ${encodeURIComponent(address)}%0A%0A*Order Items:*%0A${itemsText}%0A%0A*Total Payable:* ₹${total}`;
+
+            window.open(`https://wa.me/?text=${message}`, '_blank');
+        }
+
+        // PINCODE DELIVERY CHECKER
+        function openPincodeModal() {
+            document.getElementById('pincode-modal').classList.remove('hidden');
+        }
+        function closePincodeModal() {
+            document.getElementById('pincode-modal').classList.add('hidden');
+        }
+        function checkPincodeDelivery() {
+            playClickSound('pop');
+            const pin = document.getElementById('pincode-input').value.trim();
+            const res = document.getElementById('pincode-result');
+            if (/^\d{6}$/.test(pin)) {
+                res.innerText = `✓ Express Next-Day Delivery & Cash on Delivery available for ${pin}!`;
+                res.classList.remove('hidden', 'text-red-500');
+                res.classList.add('text-emerald-600');
+                document.getElementById('header-pincode-text').innerText = `Deliver to ${pin} (24h Express)`;
+                showToast(`Delivery location updated to ${pin}`);
+            } else {
+                res.innerText = "✕ Please enter a valid 6-digit Pincode.";
+                res.classList.remove('hidden', 'text-emerald-600');
+                res.classList.add('text-red-500');
+            }
+        }
+
+        // MY ORDERS MODAL
+        function openOrdersModal() {
+            const list = document.getElementById('orders-list');
+            if (pastOrders.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-8">No orders placed yet. Try buying something!</p>`;
+            } else {
+                list.innerHTML = pastOrders.map(o => `
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1">
+                        <div class="flex justify-between items-center text-xs font-extrabold">
+                            <span class="text-[#2874f0]">${o.id}</span>
+                            <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md text-[10px]">Confirmed</span>
+                        </div>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 font-medium line-clamp-2">${o.items}</p>
+                        <div class="flex justify-between text-[11px] text-slate-400 pt-1">
+                            <span>${o.date}</span>
+                            <span class="font-bold text-slate-900 dark:text-white">₹${o.total.toLocaleString('en-IN')}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('orders-modal').classList.remove('hidden');
+        }
+        function closeOrdersModal() {
+            document.getElementById('orders-modal').classList.add('hidden');
+        }
+
+        // PRODUCT DETAIL MODAL
+        function openProductModal(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const isWishlisted = wishlist.includes(product.id);
+            const discountOff = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+            const modalBody = document.getElementById('product-modal-body');
+            modalBody.innerHTML = `
+                <div class="space-y-4">
+                    <img src="${product.image}" class="w-full h-56 object-cover rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="flex justify-between items-start gap-2">
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-[#2874f0] font-bold">${product.badge} • ${product.category}</span>
+                            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">${product.name}</h3>
+                        </div>
+                        <span class="bg-emerald-600 text-white font-bold text-xs px-2 py-1 rounded flex items-center gap-1 shrink-0">
+                            ${product.rating} <i class="fa-solid fa-star text-[10px]"></i>
+                        </span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">${product.description}</p>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-extrabold text-slate-900 dark:text-white">₹${product.price.toLocaleString('en-IN')}</span>
+                                <span class="text-xs text-slate-400 line-through">₹${product.mrp.toLocaleString('en-IN')}</span>
+                                <span class="text-xs font-bold text-emerald-600">${discountOff}% off</span>
+                            </div>
+                            <p class="text-[11px] text-emerald-600 font-semibold">In Stock • Free Delivery</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="toggleWishlist(${product.id}, event); openProductModal(${product.id});" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-red-500">
+                                <i class="fa-${isWishlisted ? 'solid' : 'regular'} fa-heart ${isWishlisted ? 'text-red-500' : ''}"></i>
+                            </button>
+                            <button onclick="addToCart(${product.id}); closeProductModal();" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-xs px-3.5 py-2.5 rounded-lg">
+                                Add to Cart
+                            </button>
+                            <button onclick="closeProductModal(); buyNow(${product.id});" class="bg-[#fb641b] hover:bg-orange-600 text-white font-bold text-xs px-3.5 py-2.5 rounded-lg">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const modal = document.getElementById('product-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('product-modal');
+            modal.classList.add('hidden');
+        }
+
+        // TOAST NOTIFICATION
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
